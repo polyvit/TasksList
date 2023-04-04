@@ -41,6 +41,7 @@ const tasks = [
 
   // Events
   form.addEventListener("submit", onSubmitHandler);
+  listContainer.addEventListener("click", deleteTask);
 
   // Handlers
   function onSubmitHandler(e) {
@@ -58,6 +59,14 @@ const tasks = [
     listContainer.insertAdjacentElement("afterbegin", li);
     form.reset();
   }
+  function deleteTask({ target }) {
+    if (target.classList.contains("delete-btn")) {
+      const task = target.closest("[data-task-id]");
+      const id = task.dataset.taskId;
+      const confirmed = deleteObjTask(id);
+      if (confirmed) task.remove();
+    }
+  }
 
   // Functions
   listContainer.innerHTML = "";
@@ -73,7 +82,7 @@ const tasks = [
     listContainer.append(fragment);
   }
 
-  function renderOneLi({ title, body }) {
+  function renderOneLi({ _id, title, body }) {
     let li = document.createElement("li");
     li.classList.add(
       "list-group-item",
@@ -81,6 +90,7 @@ const tasks = [
       "align-items-center",
       "flex-wrap"
     );
+    li.setAttribute("data-task-id", _id);
     const span = document.createElement("span");
     span.textContent = title;
     span.style.fontWeight = "bold";
@@ -107,5 +117,12 @@ const tasks = [
     };
     objOfTasks[newTask._id] = newTask;
     return { ...newTask };
+  }
+
+  function deleteObjTask(id) {
+    const isConfirm = confirm("Вы точно хотите удалить эту задачу?");
+    if (!isConfirm) return;
+    delete objOfTasks[id];
+    return isConfirm;
   }
 })(tasks);
