@@ -106,6 +106,7 @@ const tasks = [
   const inputTitle = form.elements["title"];
   const inputBody = form.elements["body"];
   const themeSelect = document.querySelector("#themeSelect");
+  const noTasksSection = document.querySelector(".notion");
 
   // Events
   form.addEventListener("submit", onSubmitHandler);
@@ -134,6 +135,9 @@ const tasks = [
       const id = task.dataset.taskId;
       const confirmed = deleteObjTask(id);
       if (confirmed) task.remove();
+      if (Object.keys(objOfTasks).length == 0) {
+        noTasksSection.classList.remove("d-none");
+      }
     }
   }
 
@@ -144,6 +148,10 @@ const tasks = [
   themeSelect.value = localStorage.getItem("app_theme");
   function renderAllTasks(tasksList) {
     if (!tasksList) return;
+
+    if (Object.keys(tasksList).length >= 1) {
+      noTasksSection.classList.add("d-none");
+    }
 
     const fragment = document.createDocumentFragment();
     Object.values(tasksList).forEach((task) => {
