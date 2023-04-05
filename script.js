@@ -111,6 +111,7 @@ const tasks = [
   // Events
   form.addEventListener("submit", onSubmitHandler);
   listContainer.addEventListener("click", deleteTask);
+  listContainer.addEventListener("click", completeTask);
   themeSelect.addEventListener("change", changeTheme);
 
   // Handlers
@@ -138,6 +139,14 @@ const tasks = [
       if (Object.keys(objOfTasks).length == 0) {
         noTasksSection.classList.remove("d-none");
       }
+    }
+  }
+  function completeTask({ target }) {
+    if (target.classList.contains("complete-btn")) {
+      const task = target.closest("[data-task-id]");
+      const id = task.dataset.taskId;
+      objOfTasks[id].completed = false;
+      task.classList.add("completed-task");
     }
   }
 
@@ -173,16 +182,19 @@ const tasks = [
     const span = document.createElement("span");
     span.textContent = title;
     span.style.fontWeight = "bold";
-    const button = document.createElement("button");
-    button.textContent = "Удалить";
-    button.classList.add("btn", "btn-danger", "delete-btn");
-    button.setAttribute("style", "margin-left: auto !important");
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Удалить";
+    deleteButton.classList.add("btn", "btn-danger", "delete-btn", "ms-auto");
+    const completeButton = document.createElement("button");
+    completeButton.textContent = "Выполнено";
+    completeButton.classList.add("btn", "btn-primary", "complete-btn", "ms-2");
     const p = document.createElement("p");
     p.classList.add("mt-2", "w-100");
     p.textContent = body;
 
     li.append(span);
-    li.append(button);
+    li.append(deleteButton);
+    li.append(completeButton);
     li.append(p);
     return li;
   }
