@@ -10,9 +10,22 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="styles.css" />
     <title>Todo list</title>
   </head>
   <body>
+    <!-- Меню -->
+    <nav class="header navbar navbar-dark bg-primary">
+      <a class="navbar-brand">Navbar</a>
+      <form class="form-inline">
+        <select class="form-control form-control-sm" id="themeSelect">
+          <option value="default">Theme Default</option>
+          <option value="light">Theme Light</option>
+          <option value="dark">Theme Dark</option>
+        </select>
+      </form>
+    </nav>
+    <!-- Заголовок -->
     <div class="title my-5 mx-auto w-100">
       <h3 class="text-center">Список задач</h3>
     </div>
