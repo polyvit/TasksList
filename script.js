@@ -152,7 +152,9 @@ const tasks = [
       const task = target.closest("[data-task-id]");
       const id = task.dataset.taskId;
       objOfTasks[id].completed = true;
+      localStorage.setItem("data", JSON.stringify(objOfTasks));
       task.classList.add("completed-task");
+      listContainer.insertAdjacentElement("beforeend", task);
     }
   }
   function filterTasks({ target }) {
@@ -187,19 +189,24 @@ const tasks = [
       tasksMenuContainer.classList.add("d-none");
     }
 
-    const fragment = document.createDocumentFragment();
+    const fragment1 = document.createDocumentFragment();
+    const fragment2 = document.createDocumentFragment();
     Object.values(tasksList).forEach((task) => {
       const li = renderOneLi(task);
-      fragment.append(li);
+      fragment1.append(li);
+      if (li.classList.contains("completed-task")) {
+        fragment2.append(li);
+      }
     });
-    listContainer.append(fragment);
+    listContainer.append(fragment1);
+    listContainer.append(fragment2);
 
     tasksMenuContainer
       .querySelector('[data-type="all"]')
       .classList.add("btn-active");
   }
 
-  function renderOneLi({ _id, title, body }) {
+  function renderOneLi({ _id, title, body, completed }) {
     let li = document.createElement("li");
     li.classList.add(
       "list-group-item",
@@ -207,6 +214,9 @@ const tasks = [
       "align-items-center",
       "flex-wrap"
     );
+    if (completed) {
+      li.classList.add("completed-task");
+    }
     li.setAttribute("data-task-id", _id);
     const span = document.createElement("span");
     span.textContent = title;
