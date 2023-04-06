@@ -27,7 +27,7 @@ const tasks = [
   // },
 ];
 
-(function (arrOfTasks) {
+(function () {
   // Data
   // const objOfTasks = arrOfTasks.reduce((acc, task) => {
   //   acc[task._id] = task;
@@ -109,6 +109,7 @@ const tasks = [
   const inputBody = form.elements["body"];
   const themeSelect = document.querySelector("#themeSelect");
   const noTasksSection = document.querySelector(".notion");
+  const tasksSum = document.querySelector(".tasks-sum");
 
   // Events
   form.addEventListener("submit", onSubmitHandler);
@@ -133,6 +134,7 @@ const tasks = [
     listContainer.insertAdjacentElement("beforeend", li);
     noTasksSection.classList.add("d-none");
     tasksMenuContainer.classList.remove("d-none");
+    setTasksSum();
     form.reset();
   }
   function deleteTask({ target }) {
@@ -140,7 +142,10 @@ const tasks = [
       const task = target.closest("[data-task-id]");
       const id = task.dataset.taskId;
       const confirmed = deleteObjTask(id);
-      if (confirmed) task.remove();
+      if (confirmed) {
+        task.remove();
+        setTasksSum();
+      }
       if (Object.keys(objOfTasks).length == 0) {
         noTasksSection.classList.remove("d-none");
         tasksMenuContainer.classList.add("d-none");
@@ -178,6 +183,7 @@ const tasks = [
 
   // Functions
   renderAllTasks(objOfTasks);
+  setTasksSum();
   setTheme(localStorage.getItem("app_theme") ?? "default");
   themeSelect.value = localStorage.getItem("app_theme");
 
@@ -185,8 +191,8 @@ const tasks = [
     if (!tasksList) return;
 
     if (Object.keys(tasksList).length == 0) {
-      noTasksSection.classList.remove("d-none");
       tasksMenuContainer.classList.add("d-none");
+      noTasksSection.classList.remove("d-none");
     }
 
     const fragment1 = document.createDocumentFragment();
@@ -201,9 +207,9 @@ const tasks = [
     listContainer.append(fragment1);
     listContainer.append(fragment2);
 
-    tasksMenuContainer
-      .querySelector('[data-type="all"]')
-      .classList.add("btn-active");
+    // tasksMenuContainer
+    //   .querySelector('[data-type="all"]')
+    //   .classList.add("btn-active");
   }
 
   function renderOneLi({ _id, title, body, completed }) {
@@ -269,4 +275,7 @@ const tasks = [
       document.documentElement.style.setProperty(prop, value);
     });
   }
-})(tasks);
+  function setTasksSum() {
+    tasksSum.textContent = ` ${Object.keys(objOfTasks).length}`;
+  }
+})();
