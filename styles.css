@@ -66,6 +66,10 @@ body {
   border-color: var(--danger-btn-border-color);
 }
 
+.btn.btn-light.btn-active {
+  background: var(--bs-btn-active-bg);
+}
+
 .form-control {
   background: var(--input-bg-color);
   border-color: var(--input-border-color);
